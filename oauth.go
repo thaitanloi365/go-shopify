@@ -17,6 +17,23 @@ const shopifyChecksumHeader = "X-Shopify-Hmac-Sha256"
 
 var accessTokenRelPath = "admin/oauth/access_token"
 
+type Token struct {
+	AccessToken         string `json:"access_token"`
+	Scope               string `json:"scope"`
+	ExpiresIn           int    `json:"expires_in"`
+	AssociatedUserScope string `json:"associated_user_scope"`
+	AssociatedUser      struct {
+		ID            int    `json:"id"`
+		FirstName     string `json:"first_name"`
+		LastName      string `json:"last_name"`
+		Email         string `json:"email"`
+		EmailVerified bool   `json:"email_verified"`
+		AccountOwner  bool   `json:"account_owner"`
+		Locale        string `json:"locale"`
+		Collaborator  bool   `json:"collaborator"`
+	} `json:"associated_user"`
+}
+
 // Returns a Shopify oauth authorization url for the given shopname and state.
 //
 // State is a unique value that can be used to check the authenticity during a
@@ -33,10 +50,7 @@ func (app App) AuthorizeUrl(shopName string, state string) string {
 	return shopUrl.String()
 }
 
-func (app App) GetAccessToken(shopName string, code string) (string, error) {
-	type Token struct {
-		Token string `json:"access_token"`
-	}
+func (app App) GetAccessToken(shopName string, code string) (*Token, error) {
 
 	data := struct {
 		ClientId     string `json:"client_id"`
@@ -55,12 +69,12 @@ func (app App) GetAccessToken(shopName string, code string) (string, error) {
 
 	req, err := client.NewRequest("POST", accessTokenRelPath, data, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	token := new(Token)
 	err = client.Do(req, token)
-	return token.Token, err
+	return token, err
 }
 
 // Verify a message against a message HMAC
