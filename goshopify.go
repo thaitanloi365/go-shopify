@@ -36,6 +36,14 @@ var (
 	apiVersionRegex = regexp.MustCompile(`^[0-9]{4}-[0-9]{2}$`)
 )
 
+// AccessMode access mode
+type AccessMode string
+
+var (
+	AccessModeOnline  AccessMode = "per-user"
+	AccessModeOffline AccessMode = ""
+)
+
 // App represents basic app settings such as Api key, secret, scope, and redirect url.
 // See oauth.go for OAuth related helper functions.
 type App struct {
@@ -44,6 +52,7 @@ type App struct {
 	RedirectUrl string
 	Scope       string
 	Password    string
+	AccessMode  AccessMode
 	Client      *Client // see GetAccessToken
 }
 

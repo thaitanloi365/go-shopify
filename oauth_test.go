@@ -47,7 +47,7 @@ func TestAppGetAccessToken(t *testing.T) {
 	}
 
 	expected := "footoken"
-	if token != expected {
+	if token.AccessToken != expected {
 		t.Errorf("Token = %v, expected %v", token, expected)
 	}
 }
@@ -64,7 +64,7 @@ func TestAppGetAccessTokenError(t *testing.T) {
 	if err == nil || err.Error() != expectedError.Error() {
 		t.Errorf("Expected error %s got error %s", expectedError.Error(), err.Error())
 	}
-	if token != "" {
+	if token.AccessToken != "" {
 		t.Errorf("Expected empty token received %s", token)
 	}
 
@@ -74,7 +74,7 @@ func TestAppGetAccessTokenError(t *testing.T) {
 	if err == nil || !strings.Contains(err.Error(), "missing protocol scheme") {
 		t.Errorf("Expected error %s got error %s", expectedError.Error(), err.Error())
 	}
-	if token != "" {
+	if token.AccessToken != "" {
 		t.Errorf("Expected empty token received %s", token)
 	}
 }
