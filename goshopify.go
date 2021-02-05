@@ -40,8 +40,8 @@ var (
 type AccessMode string
 
 var (
-	AccessModeOnline  AccessMode = "per-user"
-	AccessModeOffline AccessMode = ""
+	AccessModeOnline  AccessMode = "online"
+	AccessModeOffline AccessMode = "offline"
 )
 
 // App represents basic app settings such as Api key, secret, scope, and redirect url.

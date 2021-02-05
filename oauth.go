@@ -47,7 +47,7 @@ func (app App) AuthorizeUrl(shopName string, state string) string {
 	query.Set("scope", app.Scope)
 	query.Set("state", state)
 	if app.AccessMode == AccessModeOnline {
-		query.Set("access_mode", string(app.AccessMode))
+		query.Set("grant_options[]", "per-user")
 	}
 	shopUrl.RawQuery = query.Encode()
 	return shopUrl.String()
